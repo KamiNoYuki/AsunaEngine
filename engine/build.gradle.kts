@@ -36,31 +36,24 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()  // 自动生成源码包
+        }
+    }
 }
 
 afterEvaluate {
-    // 1. 获取 AAR 文件的路径（官方推荐方式）
-    val aarFile = tasks.named("bundleReleaseAar").get().outputs.files.singleFile
-
     publishing {
         publications {
-            create<MavenPublication>("release") {
+            register<MavenPublication>("release") {
+                // 使用 AGP 官方推荐的变体 API 获取构件
+                from(components["release"])
+
                 groupId = "com.sho.ss.asuna"
                 artifactId = "asuna-engine"
                 version = "1.0.0"
-
-                // 2. 直接引用 AAR 文件路径
-                artifact(aarFile) {
-                    classifier = null
-                    extension = "aar"
-                }
-
-                // 3. 附加源码包
-                artifact(tasks.register("sourcesJar", Jar::class) {
-                    from(fileTree("src/main/java"))
-                    from(fileTree("src/main/kotlin"))
-                    archiveClassifier.set("sources")
-                })
             }
         }
         repositories {
