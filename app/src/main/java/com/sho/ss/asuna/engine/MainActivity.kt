@@ -25,9 +25,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AsunaTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Text("Welcome to Asuna Engine")
-                }
+                Text("Welcome to Asuna Engine")
             }
         }
     }
