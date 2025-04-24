@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AsunaTheme {
-                Text("Welcome to Asuna Engine")
+                Text("Welcome to use the Asuna Engine.")
             }
         }
     }

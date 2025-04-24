@@ -38,16 +38,32 @@ android {
 }
 
 afterEvaluate {
+    // 1. 注册 sourcesJar 任务
+    val sourcesJar = tasks.register("sourcesJar", Jar::class) {
+        from(fileTree("src/main/java"))
+        from(fileTree("src/main/kotlin"))
+        archiveClassifier.set("sources")
+    }
+
+    // 2. 显式声明元数据任务依赖
+    tasks.withType<GenerateModuleMetadata>().configureEach {
+        dependsOn(sourcesJar)
+    }
+
+    // 3. 配置发布
     publishing {
         publications {
-            // Creates a Maven publication called "release".
             create<MavenPublication>("release") {
-                // Applies the component for the release build variant.
-                // from(components["release"])
-                // You can then customize attributes of the publication as shown below.
                 groupId = "com.sho.ss.asuna"
                 artifactId = "asuna-engine"
-                version = version
+                version = "1.0.0"  // 建议改为 "1.0.0"
+                from(components["release"])
+                artifact(sourcesJar)
+            }
+        }
+        repositories {
+            maven {
+                url = uri("https://jitpack.io")
             }
         }
     }
