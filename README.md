@@ -25,7 +25,7 @@ dependencies {
 通过实例化 **AsunaEngine()** 来进行调用，例如发起搜索。
 ```kotlin
 AsunaEngine().search(sourcesList, "keyword", object : NewSearchListener() {
-    override fun onStarted(keyword String) {
+    override fun onStarted(keyword: String) {
         println("onSearchStarted")
     }
     ....省略其他回调
