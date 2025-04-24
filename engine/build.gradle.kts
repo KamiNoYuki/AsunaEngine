@@ -38,26 +38,30 @@ android {
 }
 
 afterEvaluate {
-    // 1. 注册 sourcesJar 任务
+    // 1. 定义 sourcesJar 任务，明确分类器为 "sources"
     val sourcesJar = tasks.register("sourcesJar", Jar::class) {
         from(fileTree("src/main/java"))
         from(fileTree("src/main/kotlin"))
         archiveClassifier.set("sources")
+        archiveExtension.set("jar")  // 显式设置扩展名（可选）
     }
 
-    // 2. 显式声明元数据任务依赖
-    tasks.withType<GenerateModuleMetadata>().configureEach {
-        dependsOn(sourcesJar)
-    }
-
-    // 3. 配置发布
+    // 2. 确保主组件生成的是 AAR（Android 库）
     publishing {
         publications {
             create<MavenPublication>("release") {
                 groupId = "com.sho.ss.asuna"
                 artifactId = "asuna-engine"
-                version = "1.0.0"  // 建议改为 "1.0.0"
-                from(components["release"])
+                version = "1.0.0"  // 使用语义化版本
+
+                // 主组件为 Android 库的 AAR 文件
+                artifact("${layout.buildDirectory}/outputs/aar/${project.name}-release.aar") {
+                    // 主构件无需分类器
+                    classifier = null
+                    extension = "aar"
+                }
+
+                // 附加源码包
                 artifact(sourcesJar)
             }
         }
