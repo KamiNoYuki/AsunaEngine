@@ -1,7 +1,7 @@
 # AsunaEngine
 基于Webmagic的安卓爬虫引擎模块，可通过自定义视频源配置文件来抓取视频数据。
 
-添加方式
+添加方式  
 1.在项目级settings.gradle.kts内加入
 `kotlin
 dependencyResolutionManagement {
