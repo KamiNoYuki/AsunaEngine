@@ -12,8 +12,8 @@ dependencyResolutionManagement {
         maven { setUrl("https://jitpack.io") }
     }
 }
-`
-2.在app模块下的build.gradle.kts内的dependencies中加入
+`  
+2.在app模块下的build.gradle.kts内的dependencies中加入  
 `kotlin
 dependencies {
 		implementation("com.github.KamiNoYuki:AsunaEngine:1.0.0-beta")
