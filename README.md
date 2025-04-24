@@ -3,18 +3,18 @@
 
 #### 引入方式  
  
- 1.在项目级 settings.gradle.kts 内加入
+ 1.在项目级 settings.gradle.kts 内添加
 ```kotlin
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
-        maven { setUrl("https://jitpack.io") }
+        maven { setUrl("https://jitpack.io") } //引入jitpack远程仓库
     }
 }
 ``` 
-2.在app模块下的 build.gradle.kts 内的 dependencies 中加入  
+2.在app模块下的 build.gradle.kts 内的 dependencies 中添加
 ```kotlin
 dependencies {
     implementation("com.github.KamiNoYuki:AsunaEngine:1.0.0-beta")
