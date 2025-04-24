@@ -37,27 +37,43 @@ android {
     }
 }
 
-afterEvaluate {
-    val sourcesJar = tasks.register("sourcesJar", Jar::class) {
-        // 直接使用文件路径（避免 SourceDirectorySet 类型问题）
-        from(fileTree("src/main/java"))
-        from(fileTree("src/main/kotlin"))
-        archiveClassifier.set("sources")
-    }
+//afterEvaluate {
+//    val sourcesJar = tasks.register("sourcesJar", Jar::class) {
+//        // 直接使用文件路径（避免 SourceDirectorySet 类型问题）
+//        from(fileTree("src/main/java"))
+//        from(fileTree("src/main/kotlin"))
+//        archiveClassifier.set("sources")
+//    }
+//
+//    publishing {
+//        publications {
+//            create<MavenPublication>("release") {
+//                groupId = "com.sho.ss.asuna"
+//                artifactId = "asuna-engine"
+//                version = "1.0.250424"
+//                from(components["release"])
+//                artifact(sourcesJar)  // 自动关联任务依赖
+//            }
+//        }
+//        repositories {
+//            maven {
+//                url = uri("https://jitpack.io")
+//            }
+//        }
+//    }
+//}
 
+afterEvaluate {
     publishing {
         publications {
+            // Creates a Maven publication called "release".
             create<MavenPublication>("release") {
+                // Applies the component for the release build variant.
+                // from(components["release"])
+                // You can then customize attributes of the publication as shown below.
                 groupId = "com.sho.ss.asuna"
                 artifactId = "asuna-engine"
-                version = "1.0.250424"
-                from(components["release"])
-                artifact(sourcesJar)  // 自动关联任务依赖
-            }
-        }
-        repositories {
-            maven {
-                url = uri("https://jitpack.io")
+                version = version
             }
         }
     }
@@ -90,7 +106,7 @@ dependencies {
     implementation(libs.xsoup)
     implementation(libs.commons.collections)
     implementation(libs.jsonpath.json.path)
-    testImplementation(libs.moco.core){
+    testImplementation(libs.moco.core) {
         exclude("org.slf4j", "slf4j-simple")
     }
     testImplementation(libs.assertj.core)
