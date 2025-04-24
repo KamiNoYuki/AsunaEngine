@@ -1,7 +1,7 @@
 # AsunaEngine
 基于Webmagic的安卓爬虫引擎，可通过自定义视频源来抓取网站数据和视频数据。
 
-#### 引入方式  
+### 引入方式  
  
  1.在项目级 settings.gradle.kts 内添加
 ```kotlin
@@ -21,8 +21,8 @@ dependencies {
 }
 ```
 
-#### 使用
-* 通过实例化 **AsunaEngine()** 来进行调用，例如发起搜索
+### 使用
+通过实例化 **AsunaEngine()** 来进行调用，例如发起搜索。
 ```kotlin
 AsunaEngine().search(sourcesList, "keyword", object : NewSearchListener() {
     override fun onStarted(keyword String) {
