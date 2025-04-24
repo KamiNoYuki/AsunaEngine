@@ -37,32 +37,6 @@ android {
     }
 }
 
-//afterEvaluate {
-//    val sourcesJar = tasks.register("sourcesJar", Jar::class) {
-//        // 直接使用文件路径（避免 SourceDirectorySet 类型问题）
-//        from(fileTree("src/main/java"))
-//        from(fileTree("src/main/kotlin"))
-//        archiveClassifier.set("sources")
-//    }
-//
-//    publishing {
-//        publications {
-//            create<MavenPublication>("release") {
-//                groupId = "com.sho.ss.asuna"
-//                artifactId = "asuna-engine"
-//                version = "1.0.250424"
-//                from(components["release"])
-//                artifact(sourcesJar)  // 自动关联任务依赖
-//            }
-//        }
-//        repositories {
-//            maven {
-//                url = uri("https://jitpack.io")
-//            }
-//        }
-//    }
-//}
-
 afterEvaluate {
     publishing {
         publications {
