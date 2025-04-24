@@ -38,30 +38,32 @@ android {
 }
 
 afterEvaluate {
+    // 先注册 sourcesJar 任务
+    val sourcesJar = tasks.register("sourcesJar", Jar::class) {
+        from(android.sourceSets["main"].java.srcDirs)
+        from(android.sourceSets["main"].kotlin.srcDirs())
+        archiveClassifier.set("sources")
+    }
+
     publishing {
         publications {
             create<MavenPublication>("release") {
-                // 发布的内容为 Android 库的 release 产物
-                from(components["release"])
-                // 定义 Maven 坐标
+                // 声明依赖关系：生成元数据前必须先执行 sourcesJar
+                tasks.named("generateMetadataFileForReleasePublication").configure {
+                    dependsOn(sourcesJar)
+                }
+
                 groupId = "com.sho.ss.asuna"
-                artifactId = "asuna-egine"
-                version = "1.0_250424"
-                // 可选：附加源码和文档
-                artifact(tasks.register("sourcesJar", Jar::class) {
-                    from(android.sourceSets["main"].java.srcDirs)
-                    archiveClassifier.set("sources")
-                })
+                artifactId = "asuna-engine"  // 修正拼写错误（egine → engine）
+                version = "1.0.250424"       // 建议使用语义化版本号（去掉下划线）
+                from(components["release"])
+                artifact(sourcesJar)  // 引用已注册的任务
             }
         }
         repositories {
             maven {
-                // 配置远程仓库地址（示例：GitHub Packages）
-                url = uri("https://github.com/KamiNoYuki/AsunaEngine.git")
-                credentials {
-                    username = System.getenv("GPR_USER")
-                    password = System.getenv("GPR_TOKEN")
-                }
+                url = uri("https://jitpack.io")
+                // JitPack 不需要 credentials
             }
         }
     }
