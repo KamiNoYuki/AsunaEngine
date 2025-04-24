@@ -57,7 +57,7 @@ afterEvaluate {
         repositories {
             maven {
                 // 配置远程仓库地址（示例：GitHub Packages）
-                url = uri("https://maven.pkg.github.com/yourusername/repo")
+                url = uri("https://github.com/KamiNoYuki/AsunaEngine.git")
                 credentials {
                     username = System.getenv("GPR_USER")
                     password = System.getenv("GPR_TOKEN")
