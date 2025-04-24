@@ -38,32 +38,26 @@ android {
 }
 
 afterEvaluate {
-    // 先注册 sourcesJar 任务
     val sourcesJar = tasks.register("sourcesJar", Jar::class) {
-        from(android.sourceSets["main"].java.srcDirs)
-        from(android.sourceSets["main"].kotlin.srcDirs())
+        // 直接使用文件路径（避免 SourceDirectorySet 类型问题）
+        from(fileTree("src/main/java"))
+        from(fileTree("src/main/kotlin"))
         archiveClassifier.set("sources")
     }
 
     publishing {
         publications {
             create<MavenPublication>("release") {
-                // 声明依赖关系：生成元数据前必须先执行 sourcesJar
-                tasks.named("generateMetadataFileForReleasePublication").configure {
-                    dependsOn(sourcesJar)
-                }
-
                 groupId = "com.sho.ss.asuna"
-                artifactId = "asuna-engine"  // 修正拼写错误（egine → engine）
-                version = "1.0.250424"       // 建议使用语义化版本号（去掉下划线）
+                artifactId = "asuna-engine"
+                version = "1.0.250424"
                 from(components["release"])
-                artifact(sourcesJar)  // 引用已注册的任务
+                artifact(sourcesJar)  // 自动关联任务依赖
             }
         }
         repositories {
             maven {
                 url = uri("https://jitpack.io")
-                // JitPack 不需要 credentials
             }
         }
     }
