@@ -31,6 +31,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "asuna"
+rootProject.name = "AsunaEngine"
 include(":app")
-include(":asuna")
+include(":engine")

@@ -2,7 +2,7 @@ package com.sho.ss.asuna.engine.processor
 
 import android.text.TextUtils
 import com.sho.ss.asuna.engine.core.Page
-import com.sho.ss.asuna.engine.SourceEngine
+import com.sho.ss.asuna.engine.AsunaEngine
 import com.sho.ss.asuna.engine.constant.EngineConstant
 import com.sho.ss.asuna.engine.constant.ErrorFlag
 import com.sho.ss.asuna.engine.constant.SourceType
@@ -263,7 +263,7 @@ class ExtVideoBatchProcessor(
                         listener
                     ) as BaseVideoExtensionProcessor<out VideoSource, out Episode>
                 }.onFailure {
-                    val msg = SourceEngine.getExtProcessorErrMsgByException(it as Exception)
+                    val msg = AsunaEngine.getExtProcessorErrMsgByException(it as Exception)
                     println("加载扩展处理器失败：$msg")
                     listener.onFail(ErrorFlag.EXT_PROCESSOR_NOT_FOUND, msg)
                 }.getOrNull()
