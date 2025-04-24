@@ -1,3 +1,4 @@
+import com.android.build.gradle.internal.tasks.BundleLibraryClassesJar
 import org.gradle.kotlin.dsl.implementation
 import org.gradle.kotlin.dsl.testImplementation
 
@@ -38,31 +39,28 @@ android {
 }
 
 afterEvaluate {
-    // 1. 定义 sourcesJar 任务，明确分类器为 "sources"
-    val sourcesJar = tasks.register("sourcesJar", Jar::class) {
-        from(fileTree("src/main/java"))
-        from(fileTree("src/main/kotlin"))
-        archiveClassifier.set("sources")
-        archiveExtension.set("jar")  // 显式设置扩展名（可选）
-    }
+    // 1. 获取 AAR 文件的路径（官方推荐方式）
+    val aarFile = tasks.named("bundleReleaseAar").get().outputs.files.singleFile
 
-    // 2. 确保主组件生成的是 AAR（Android 库）
     publishing {
         publications {
             create<MavenPublication>("release") {
                 groupId = "com.sho.ss.asuna"
                 artifactId = "asuna-engine"
-                version = "1.0.0"  // 使用语义化版本
+                version = "1.0.0"
 
-                // 主组件为 Android 库的 AAR 文件
-                artifact("${layout.buildDirectory}/outputs/aar/${project.name}-release.aar") {
-                    // 主构件无需分类器
+                // 2. 直接引用 AAR 文件路径
+                artifact(aarFile) {
                     classifier = null
                     extension = "aar"
                 }
 
-                // 附加源码包
-                artifact(sourcesJar)
+                // 3. 附加源码包
+                artifact(tasks.register("sourcesJar", Jar::class) {
+                    from(fileTree("src/main/java"))
+                    from(fileTree("src/main/kotlin"))
+                    archiveClassifier.set("sources")
+                })
             }
         }
         repositories {
